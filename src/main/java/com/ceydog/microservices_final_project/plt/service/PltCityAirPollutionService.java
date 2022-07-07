@@ -11,6 +11,7 @@ import com.ceydog.microservices_final_project.plt.dto.category.PltCOCategoryDto;
 import com.ceydog.microservices_final_project.plt.dto.category.PltO3CategoryDto;
 import com.ceydog.microservices_final_project.plt.dto.category.PltSO2CategoryDto;
 import com.ceydog.microservices_final_project.plt.entity.PltCityAirPollution;
+import com.ceydog.microservices_final_project.plt.enums.EnumValidCity;
 import com.ceydog.microservices_final_project.plt.service.entityservice.PltCityAirPollutionEntityService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -21,8 +22,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static com.ceydog.microservices_final_project.json.converter.JsonConverter.getJSONBodyFromURL;
 
@@ -94,6 +97,29 @@ public class PltCityAirPollutionService {
         return cityAirPollutionData;
     }
 
+    public List<PltCityAirPollution> deleteByCityName(String cityName){
+        if (!pollutionEntityService.existsByCityName(cityName)){
+            throw new RuntimeException("Data for " + cityName + " does not exist!");
+        }
+        return pollutionEntityService.deleteByCityName(cityName);
+    }
+
+    public List<PltCityAirPollution> deleteByCityNameAndDateBetween(String cityName, String startDate, String endDate){
+        if (!pollutionEntityService.existsByCityNameAndDateBetween(cityName, startDate, endDate)){
+            throw new RuntimeException("Data does not exist!");
+        }
+
+        return pollutionEntityService.findByCityNameAndDateBetween(cityName,startDate,endDate);
+
+    }
+
+    public List<PltCityAirPollution> deletePltCityAirPollutionByCityNameAndDate(String cityName, String dateString){
+        if (!pollutionEntityService.existsByCityNameAndDate(cityName, dateString)){
+            throw new RuntimeException("Data does not exist!");
+        }
+        return pollutionEntityService.deletePltCityAirPollutionByCityNameAndDate(cityName, dateString);
+    }
+
     public boolean existsByCityName(String cityName) {
 
         if (cityName.isBlank())
@@ -103,9 +129,10 @@ public class PltCityAirPollutionService {
     }
 
     public boolean existsByCityNameAndDate(String cityName, String date){
-        if (cityName.isBlank() || date.isBlank())
-            throw new RuntimeException("Parameter cannot be blank!");
+        return pollutionEntityService.existsByCityNameAndDate(cityName,date);
+    }
 
+    public boolean existsByCityNameAndDate(String cityName, LocalDate date){
         return pollutionEntityService.existsByCityNameAndDate(cityName,date);
     }
 
@@ -184,6 +211,18 @@ public class PltCityAirPollutionService {
         Double o3 = (Double) node.path("list").get(0).get("components").get("o3").doubleValue();
 
         return new PltConcentrationDto(co, o3, so2);
+    }
+
+    public void validateCity(String cityNameInput){
+
+        String validCities = "";
+        for (EnumValidCity cityName : EnumValidCity.values()){
+            validCities = validCities + " " + cityName.getCityName();
+            if (cityNameInput.compareToIgnoreCase(String.valueOf(cityName)) == 0){
+                return;
+            }
+        }
+        throw new RuntimeException(cityNameInput + " is not a valid city! Please only use " + validCities);
     }
 
 

@@ -7,7 +7,4 @@ import lombok.Data;
 public class PltO3CategoryDto implements PltBaseCategoryDto {
     private final EnumPltCategory O3;
 
-    public EnumPltCategory getCategory() {
-        return O3;
-    }
 }

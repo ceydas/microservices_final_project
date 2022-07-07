@@ -17,7 +17,7 @@ import java.util.List;
 public class PltCityAirPollutionConverter {
 
     /**
-    Converts a general save request Dto to an acceptable RestResponse format, PltCityAirPollutionDto.
+        Converts a general save request Dto to an acceptable RestResponse format, PltCityAirPollutionDto.
      This is NOT intended for data saving purposes.
      */
 
@@ -28,7 +28,7 @@ public class PltCityAirPollutionConverter {
         //List of city air pollution data ----> city air pollution dto ( restresponse format )
         for (PltCityAirPollution cityAirPollutionData : cityAirPolutionDataList){ //For each data
             //Create a new list of PltBaseCategoryDto, that is the list of CO, O3 and SO2 concentration Dto's.
-            cityAirPollutionData.setCityName(cityAirPollutionData.getCityName());
+            airPollutionDto.setCity(cityAirPollutionData.getCityName());
             List<PltBaseCategoryDto> categories = new ArrayList<>();
             categories.add(new PltCOCategoryDto(cityAirPollutionData.getCoCategory()));
             categories.add(new PltO3CategoryDto(cityAirPollutionData.getO3Category()));

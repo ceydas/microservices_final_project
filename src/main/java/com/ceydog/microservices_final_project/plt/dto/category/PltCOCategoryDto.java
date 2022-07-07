@@ -8,7 +8,4 @@ import lombok.Data;
 public class PltCOCategoryDto implements PltBaseCategoryDto {
    private final EnumPltCategory CO;
 
-   public EnumPltCategory getCategory() {
-      return CO;
-   }
 }

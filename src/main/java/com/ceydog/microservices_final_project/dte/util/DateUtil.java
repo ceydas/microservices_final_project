@@ -2,11 +2,7 @@ package com.ceydog.microservices_final_project.dte.util;
 
 import com.ceydog.microservices_final_project.dte.dto.DteDateIntervalDto;
 import com.ceydog.microservices_final_project.dte.dto.DteDateIntervalStringInputDto;
-import com.ceydog.microservices_final_project.plt.enums.EnumPltCategory;
-import jdk.jfr.Unsigned;
 
-import java.math.BigDecimal;
-import java.net.InetSocketAddress;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -15,7 +11,6 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -29,14 +24,16 @@ public class DateUtil {
 
     }
 
-    public static boolean isValid (String date) {
+    public static void validateDate (String date) {
+        if (date == null)
+            return;
         Long epoch = getEpochTimeFromStringDate(date);
         Long now = Instant.now().getEpochSecond();
         //If the date is prior to 24-11-2019
         if ( epoch < 1606424400L || epoch > now  ){
-            return false;
+            throw new RuntimeException("Invalid date!");
         }
-        return false;
+        return;
     }
 
     public static Long getEpochTimeFromStringDate(String dateAsString)  {
@@ -78,18 +75,20 @@ public class DateUtil {
         return new DteDateIntervalDto(startDate,endDate);
     }
 
-    public static DteDateIntervalDto getDefaultDateInterval(){
+    public static DteDateIntervalStringInputDto getDefaultDateInterval(){
 
         //Get current date
         Calendar dateNow = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        String nowString = new SimpleDateFormat("dd-MM-yyyy" ).format(dateNow.getTime());
         Long now = dateNow.getTimeInMillis() / 1000;
 
         //Get 1 week ago
         Calendar dateOneWeekAgo = dateNow;
         dateOneWeekAgo.add(Calendar.WEEK_OF_MONTH, -1);
+        String oneWeekAgoString = new SimpleDateFormat("dd-MM-yyyy" ).format(dateNow.getTime());
         Long oneWeekAgo = dateOneWeekAgo.getTimeInMillis() / 1000;
 
-        return new DteDateIntervalDto(oneWeekAgo, now);
+        return new DteDateIntervalStringInputDto(oneWeekAgoString, nowString);
 
         //Long now = Instant.now().getEpochSecond();
 

@@ -78,9 +78,29 @@ public class PltCityAirPollutionEntityService extends BaseEntityService<PltCityA
         return getDao().existsByCityNameAndDate(cityName, date);
     }
 
-    public boolean existsByCityNameAndDate(String cityName, LocalDate date){
+    public boolean existsByCityNameAndDate(String cityName, LocalDate localDate){
+        Date date = DateUtil.convertToDateViaInstant(localDate);
         return getDao().existsByCityNameAndDate(cityName, date);
     }
+
+    public List<PltCityAirPollution> deleteByCityName(String cityName){
+        return getDao().deletePltCityAirPollutionByCityName(cityName);
+    }
+
+    public List<PltCityAirPollution> deleteByCityNameAndDateBetween(String cityName, String startDate, String endDate){
+        Date start = DateUtil.convertStringToDate(startDate);
+        Date end = DateUtil.convertStringToDate(endDate);
+        return getDao().deletePltCityAirPollutionByCityNameAndDateBetween(cityName,start,end);
+
+    }
+
+    public List<PltCityAirPollution> deletePltCityAirPollutionByCityNameAndDate(String cityName, String dateString){
+        Date date = DateUtil.convertStringToDate(dateString);
+        return getDao().deletePltCityAirPollutionByCityNameAndDate(cityName, date);
+    }
+
+
+
 
 
 
