@@ -27,14 +27,11 @@ Reading air pollution information by city name and date range, using a RESTful A
 <img src="https://github.com/ceydas/microservices_final_project/blob/main/swagger-ui_captures/final.JPG" width="700">
 
 ### 1. Attempting to query an invalid date range (before 26.10.20)
-<img src="https://github.com/ceydas/microservices_final_project/blob/main/swagger-ui_captures/1.JPG
-" width="700">
-<img src="https://github.com/ceydas/microservices_final_project/blob/main/swagger-ui_captures/2.JPG
-" width="700">
+<img src="https://github.com/ceydas/microservices_final_project/blob/main/swagger-ui_captures/1.JPG" width="700">
+<img src="https://github.com/ceydas/microservices_final_project/blob/main/swagger-ui_captures/2.JPG" width="700">
 
 ### 2. Attempting to query an invalid city.
-<img src="https://github.com/ceydas/microservices_final_project/blob/main/swagger-ui_captures/3.JPG
-" width="700">
+<img src="https://github.com/ceydas/microservices_final_project/blob/main/swagger-ui_captures/3.JPG" width="700">
 
 ### 3. Querying a city, without specifying a date range.
 
@@ -58,7 +55,7 @@ Reading air pollution information by city name and date range, using a RESTful A
 <img src="https://github.com/ceydas/microservices_final_project/blob/main/swagger-ui_captures/14_db.JPG" width="700">
 
 ### 5. Attempt to delete all records by city name that does not exist in the database
-<img src="https://github.com/ceydas/microservices_final_project/blob/main/swagger-ui_captures/15.JP" width="700">
+<img src="https://github.com/ceydas/microservices_final_project/blob/main/swagger-ui_captures/15.JPG" width="700">
 
 ### 6. Delete all records by city name
 <img src="https://github.com/ceydas/microservices_final_project/blob/main/swagger-ui_captures/16.JPG" width="700">
