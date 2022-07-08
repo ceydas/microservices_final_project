@@ -23,6 +23,9 @@ Reading air pollution information by city name and date range, using a RESTful A
  
 ## Swagger-UI Documentation
 
+### Controller API
+<img src="https://github.com/ceydas/microservices_final_project/blob/main/swagger-ui_captures/final.JPG" width="700">
+
 ### 1. Attempting to query an invalid date range (before 26.10.20)
 <img src="https://github.com/ceydas/microservices_final_project/blob/main/swagger-ui_captures/1.JPG
 " width="700">
@@ -65,13 +68,11 @@ Reading air pollution information by city name and date range, using a RESTful A
 
 ### Delete a single record by city name and date
 <img src="https://github.com/ceydas/microservices_final_project/blob/main/swagger-ui_captures/18.JPG" width="700">
+<img src="https://github.com/ceydas/microservices_final_project/blob/main/swagger-ui_captures/19.JPG" width="700">
+
+### Attempt to delete a range of dates by city name 
+<img src="https://github.com/ceydas/microservices_final_project/blob/main/swagger-ui_captures/20.JPG" width="700">
+<img src="https://github.com/ceydas/microservices_final_project/blob/main/swagger-ui_captures/21.JPG" width="700">
 
 
-<img src="" width="700">
-<img src="" width="700">
-<img src="" width="700">
-<img src="" width="700">
-<img src="" width="700">
-<img src="" width="700">
-<img src="" width="700">
 
