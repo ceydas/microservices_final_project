@@ -3,6 +3,8 @@
 ## About
 Reading air pollution information by city name and date range, using a RESTful API.
 
+## Author
+Ceyda Şahin | July 8, 2022
 
 ## Sources
 
@@ -63,11 +65,11 @@ Reading air pollution information by city name and date range, using a RESTful A
 ### 7. DB results after deletion
 <img src="https://github.com/ceydas/microservices_final_project/blob/main/swagger-ui_captures/17.JPG" width="700">
 
-### Delete a single record by city name and date
+### 8. Delete a single record by city name and date
 <img src="https://github.com/ceydas/microservices_final_project/blob/main/swagger-ui_captures/18.JPG" width="700">
 <img src="https://github.com/ceydas/microservices_final_project/blob/main/swagger-ui_captures/19.JPG" width="700">
 
-### Attempt to delete a range of dates by city name 
+### 9. Attempt to delete a range of dates by city name 
 <img src="https://github.com/ceydas/microservices_final_project/blob/main/swagger-ui_captures/20.JPG" width="700">
 <img src="https://github.com/ceydas/microservices_final_project/blob/main/swagger-ui_captures/21.JPG" width="700">
 
