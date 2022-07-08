@@ -1,0 +1,117 @@
+{
+  "city": "London",
+  "results": [
+    {
+      "date": "01-07-2022",
+      "categories": [
+        {
+          "co": "POOR"
+        },
+        {
+          "o3": "GOOD"
+        },
+        {
+          "so2": "GOOD"
+        }
+      ]
+    },
+    {
+      "date": "02-07-2022",
+      "categories": [
+        {
+          "co": "POOR"
+        },
+        {
+          "o3": "SATISFACTORY"
+        },
+        {
+          "so2": "GOOD"
+        }
+      ]
+    },
+    {
+      "date": "03-07-2022",
+      "categories": [
+        {
+          "co": "POOR"
+        },
+        {
+          "o3": "SATISFACTORY"
+        },
+        {
+          "so2": "GOOD"
+        }
+      ]
+    },
+    {
+      "date": "04-07-2022",
+      "categories": [
+        {
+          "co": "POOR"
+        },
+        {
+          "o3": "GOOD"
+        },
+        {
+          "so2": "GOOD"
+        }
+      ]
+    },
+    {
+      "date": "05-07-2022",
+      "categories": [
+        {
+          "co": "POOR"
+        },
+        {
+          "o3": "GOOD"
+        },
+        {
+          "so2": "GOOD"
+        }
+      ]
+    },
+    {
+      "date": "06-07-2022",
+      "categories": [
+        {
+          "co": "POOR"
+        },
+        {
+          "o3": "SATISFACTORY"
+        },
+        {
+          "so2": "GOOD"
+        }
+      ]
+    },
+    {
+      "date": "07-07-2022",
+      "categories": [
+        {
+          "co": "POOR"
+        },
+        {
+          "o3": "GOOD"
+        },
+        {
+          "so2": "GOOD"
+        }
+      ]
+    },
+    {
+      "date": "08-07-2022",
+      "categories": [
+        {
+          "co": "HAZARDOUS"
+        },
+        {
+          "o3": "GOOD"
+        },
+        {
+          "so2": "GOOD"
+        }
+      ]
+    }
+  ]
+}
