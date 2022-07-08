@@ -36,6 +36,11 @@ public class PltCityAirPollutionService {
     private final PltCityAirPollutionEntityService pollutionEntityService;
 
     public PltCityAirPollutionSaveDto save(PltCityAirPollutionSaveDto pollutionSaveDto){
+
+        if (pollutionSaveDto == null){
+            throw new RuntimeException("Parameter cannot be null!");
+        }
+
         PltCityAirPollution pltCityAirPollution = new PltCityAirPollution();
         pltCityAirPollution.setCoCategory(pollutionSaveDto.getCoCategory());
         pltCityAirPollution.setSo2Category(pollutionSaveDto.getSo2Category());

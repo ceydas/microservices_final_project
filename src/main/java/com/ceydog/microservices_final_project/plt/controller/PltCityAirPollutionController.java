@@ -1,11 +1,12 @@
-package com.ceydog.microservices_final_project;
+package com.ceydog.microservices_final_project.plt.controller;
 
 
 import com.ceydog.microservices_final_project.cty.dto.CtyCityCoordinatesDto;
-import com.ceydog.microservices_final_project.cty.util.CtyCityUrlUtil;
-import com.ceydog.microservices_final_project.dte.dto.DteDateIntervalDto;
 import com.ceydog.microservices_final_project.dte.dto.DteDateIntervalStringInputDto;
 import com.ceydog.microservices_final_project.dte.util.DateUtil;
+import com.ceydog.microservices_final_project.log.dto.LogTransactionSaveDto;
+import com.ceydog.microservices_final_project.log.enums.EnumLogTransaction;
+import com.ceydog.microservices_final_project.log.service.LogService;
 import com.ceydog.microservices_final_project.plt.converter.PltCityAirPollutionConverter;
 import com.ceydog.microservices_final_project.plt.dto.PltCityAirPollutionDto;
 import com.ceydog.microservices_final_project.plt.dto.PltCityAirPollutionSaveDto;
@@ -16,21 +17,22 @@ import com.ceydog.microservices_final_project.plt.dto.category.PltSO2CategoryDto
 import com.ceydog.microservices_final_project.plt.entity.PltCityAirPollution;
 import com.ceydog.microservices_final_project.plt.service.PltCityAirPollutionService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/air-pollution")
-public class RestTemplateController {
+public class PltCityAirPollutionController {
 
     private final PltCityAirPollutionService pltCityAirPollutionService;
+    private final LogService logService;
 
     @PostMapping("" )
     public ResponseEntity getAirPollutionDataByCityName(@RequestParam(name = "city") String cityName,
@@ -57,21 +59,23 @@ public class RestTemplateController {
         LocalDate localEndDate = LocalDate.parse(endDate, formatter);
 
         for (LocalDate date = localStartDate; date.isBefore(localEndDate.plusDays(1)); date = date.plusDays(1)) {
+            String currentDayString = DateUtil.convertDateToString(date);
             //For each date in this interval...
             //Check if it exists in DB
             List<PltCityAirPollution> resultsForCityAndDate = pltCityAirPollutionService.findByCityNameAndDate(cityName, date);
             /*If it does not exist...
             1. Get city coordinates
-            //TODO : LOG.
             2. Get concentration levels from openweatherapi.
             3. Save.
              */
             PltCityAirPollutionSaveDto saveDto = null;
             if (resultsForCityAndDate.isEmpty()){
+
                 CtyCityCoordinatesDto cityCoordinatesDto = pltCityAirPollutionService.getCityCoordinates(cityName);
                 double lat = cityCoordinatesDto.getLat();
                 double lon = cityCoordinatesDto.getLon();
-                String currentDayString = DateUtil.convertDateToString(date);
+                //Log Transaction
+                logTransactionToDb(cityName, currentDayString);
                 List<PltBaseCategoryDto> concentrationLevelsForDay = pltCityAirPollutionService.getConcentrationLevelsForDay(lat, lon, currentDayString );
                 saveDto = setSaveDto(cityName, currentDayString, concentrationLevelsForDay);
                 pltCityAirPollutionService.save(saveDto);
@@ -79,6 +83,9 @@ public class RestTemplateController {
                 if (saveDto == null){
                     throw new RuntimeException("Data cannot be saved.");
                 }
+            }
+            else {
+                logTransactionFromDb(cityName, currentDayString);
             }
         }//for each date
 
@@ -124,6 +131,7 @@ public class RestTemplateController {
 
             String currentDayString = DateUtil.convertDateToString(date);
             if (!pltCityAirPollutionService.existsByCityNameAndDate(cityName, date)){
+                logDeletionFailedFromDb(cityName, currentDayString);
                 continue;
             }
             //If data does exist, delete it from the db and extract dto.
@@ -132,15 +140,34 @@ public class RestTemplateController {
             datesDeleted = datesDeleted + currentDayString;
 
             List<PltCityAirPollution> cityData = pltCityAirPollutionService.deletePltCityAirPollutionByCityNameAndDate(cityName, currentDayString);
-
+            logDeletionFromDb(cityName, currentDayString);
         }
         if (datesDeleted.isBlank()){
             throw new RuntimeException("Deletion failed.");
         }
+
         return ResponseEntity.ok("Records from city "+ cityName + " and date " + datesDeleted + " were deleted.\n");
 
 
 
+    }
+
+    private void logDeletionFailedFromDb(String cityName, String currentDayString) {
+        LogTransactionSaveDto logTransactionSaveDto = LogTransactionSaveDto.builder()
+                .cityName(cityName)
+                .body(EnumLogTransaction.DELETION_FAILED.getMessage())
+                .date(currentDayString)
+                .build();
+        logService.log(logTransactionSaveDto);
+    }
+
+    private void logDeletionFromDb(String cityName, String currentDayString) {
+        LogTransactionSaveDto logTransactionSaveDto = LogTransactionSaveDto.builder()
+                .cityName(cityName)
+                .body(EnumLogTransaction.DELETED_FROM_DATABASE.getMessage())
+                .date(currentDayString)
+                .build();
+        logService.log(logTransactionSaveDto);
     }
 
     private PltCityAirPollutionSaveDto setSaveDto(String cityName, String currentDayString, List<PltBaseCategoryDto> concentrationLevelsForDay) {
@@ -159,6 +186,24 @@ public class RestTemplateController {
         pltCityAirPollutionService.validateCity(cityName);
         DateUtil.validateDate(startDate);
         DateUtil.validateDate(endDate);
+    }
+
+    private void logTransactionFromDb(String cityName, String currentDayString) {
+        LogTransactionSaveDto logTransactionSaveDto = LogTransactionSaveDto.builder()
+                .cityName(cityName)
+                .body(EnumLogTransaction.OBTAINED_FROM_DATABASE.getMessage())
+                .date(currentDayString)
+                .build();
+        logService.log(logTransactionSaveDto);
+    }
+
+    private void logTransactionToDb(String cityName, String currentDayString) {
+        LogTransactionSaveDto logTransactionSaveDto = LogTransactionSaveDto.builder()
+                .cityName(cityName)
+                .body(EnumLogTransaction.NOT_FOUND_IN_DATABASE.getMessage())
+                .date(currentDayString)
+                .build();
+        logService.log(logTransactionSaveDto);
     }
 
 
