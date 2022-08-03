@@ -16,8 +16,8 @@ Ceyda Şahin | July 8, 2022
 ## Requirements & Effort
 - [x] readme file
 - [x] Clean Code & SOLID 
-- [x] Microservice & Distributed Systems
-- [ ] Unit Testing
+- [ ] Microservice & Distributed Systems
+- [ ] Unit Testing  
 - [x] Design Patterns
 - [x] Documentation (SwaggerUI)
 - [x] Use of Hibernate (JPA) 
